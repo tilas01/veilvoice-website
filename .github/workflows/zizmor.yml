@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# zizmor audits these workflows for the ways a workflow is usually attacked:
+# untrusted text from an issue or pull request reaching a shell or an AI
+# prompt, tokens wider than a job needs, actions not pinned to a commit,
+# credentials left in a checkout. It runs on every pull request, so a change
+# that opens one of those routes is flagged before it is merged.
+#
+# zizmor is installed from PyPI only if its sha256 matches the one pinned in
+# .github/zizmor-requirements.txt. Findings go to the Security tab.
+
+name: zizmor
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/**']
+  pull_request:
+    branches: [main]
+    paths: ['.github/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: audit the workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: install zizmor, hash-checked
+        run: python3 -m pip install --user --no-deps --require-hashes -r .github/zizmor-requirements.txt
+
+      - name: audit
+        run: ~/.local/bin/zizmor --persona regular --format sarif --no-exit-codes .github/workflows > zizmor.sarif
+
+      - uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          sarif_file: zizmor.sarif
+          category: zizmor

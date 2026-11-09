@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Local tooling and editor files. The site itself is committed whole.
+.claude/
+.claude*/
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+graphify-out/
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/

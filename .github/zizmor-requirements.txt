@@ -1,0 +1,5 @@
+# The same pin tilas01/veilvoice uses (tools/audit/requirements.txt).
+# Dependabot's GitHub Actions entry does not watch this file; bump it by hand,
+# with the new wheel's sha256 from PyPI, when veilvoice's pin moves.
+zizmor==1.31.1 \
+    --hash=sha256:58e878eb2dbd2c6183c105e1ac28c14f7dd1eca44a783f1fe2a69647d012c410
