@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Publish site/ to GitHub Pages.
+#
+# Only site/ is published, never the repository root. The root holds the
+# `veilvoice` submodule, and a branch build would serve a second, stale copy
+# of tilas01/veilvoice under this address for search engines to find.
+#
+# For now this runs when site/ changes on main, or by hand. When the website
+# moves here, it publishes on a VeilVoice release instead, as tilas01/veilvoice
+# does today, and that commit changes the trigger below.
+
+name: pages
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
+# Read-only by default. Only the deploy job can publish.
+permissions:
+  contents: read
+
+# Never cancel a running deploy: a half-published site is worse than an old one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # `configure-pages` reads the site's settings to find its address.
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          submodules: false
+
+      # Search Console unverifies the site the moment this tag is gone, so a
+      # home page without it is never published.
+      - name: The home page keeps the Search Console tag
+        run: |
+          if ! grep -q '<meta name="google-site-verification" content="[^"]\+"' site/index.html; then
+            echo "::error::site/index.html lost its google-site-verification tag"
+            exit 1
+          fi
+
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Publishing is the one write this workflow makes, and `id-token` is how
+    # `deploy-pages` proves to Pages which run it came from.
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5

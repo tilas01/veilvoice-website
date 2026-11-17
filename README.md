@@ -24,6 +24,8 @@ The [`veilvoice`](veilvoice) folder in this repository is a link to that reposit
 
 The site is moving here from tilas01/veilvoice. Until the move is finished, it is still served at [tilas01.github.io/veilvoice](https://tilas01.github.io/veilvoice/), and that address will keep working afterwards.
 
+In the meantime, [tilas01.github.io/veilvoice-website](https://tilas01.github.io/veilvoice-website/) serves a single page from [`site/`](site), which points to the full site. Only `site/` is published, by [the `pages` workflow](.github/workflows/pages.yml). Its home page carries the Google Search Console verification tag, which has to stay on whatever page is the home page after the move, or the site stops being verified.
+
 Every page here is generated. The generators are in tilas01/veilvoice, under [`tools/site/`](https://github.com/tilas01/veilvoice/tree/main/tools/site) and [`tools/docs/`](https://github.com/tilas01/veilvoice/tree/main/tools/docs). Once the move is done, each VeilVoice release rebuilds the site from the released commit and commits the result here, signed by the project key, so the site always describes a version you can download.
 
 To change what a page says, change its source in tilas01/veilvoice. An edit made directly here is overwritten by the next release.
