@@ -1,47 +1,84 @@
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 # veilvoice-website
 
-The VeilVoice website: downloads and how to verify them, the full manual, and live demos of the app and command line.
+The source code of the VeilVoice website. It has two editions: the full one, which uses a little JavaScript for the live demos, the download checker and search, and a no-JavaScript edition built from plain HTML and CSS that works with scripts switched off. A small Python toolkit imports each release of the site, serves it on your own computer, and holds the nginx setup for running it on a server.
 
+[![checks](https://github.com/tilas01/veilvoice-website/actions/workflows/checks.yml/badge.svg)](https://github.com/tilas01/veilvoice-website/actions/workflows/checks.yml)
 [![CodeQL](https://github.com/tilas01/veilvoice-website/actions/workflows/codeql.yml/badge.svg)](https://github.com/tilas01/veilvoice-website/actions/workflows/codeql.yml)
+[![zizmor](https://github.com/tilas01/veilvoice-website/actions/workflows/zizmor.yml/badge.svg)](https://github.com/tilas01/veilvoice-website/actions/workflows/zizmor.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/tilas01/veilvoice-website/badge)](https://scorecard.dev/viewer/?uri=github.com/tilas01/veilvoice-website)
 [![Licence: GPL-3.0-or-later](https://img.shields.io/badge/licence-GPL--3.0--or--later-blue)](LICENSE)
 
-## What VeilVoice is
+**The website:** [tilas01.github.io/veilvoice-website](https://tilas01.github.io/veilvoice-website/)
+
+## Part of VeilVoice
 
 [VeilVoice](https://github.com/tilas01/veilvoice) removes the voiceprint from a recording and keeps the words. Pitch, formants, timbre and accent are destroyed on your own machine, fully offline, so the speech can still be transcribed but not traced back to a voice. It is written in Rust with no `unsafe` code.
 
-Everything about the program lives in [tilas01/veilvoice](https://github.com/tilas01/veilvoice):
+This repository holds only the website, so you can read, check or host it without downloading the whole program. The project lives in:
 
-- [The code](https://github.com/tilas01/veilvoice/tree/main/crates) and its [README](https://github.com/tilas01/veilvoice#readme)
-- [Releases](https://github.com/tilas01/veilvoice/releases), with checksums and signatures
-- [The manual and guides](https://github.com/tilas01/veilvoice/tree/main/docs), and the [wiki](https://github.com/tilas01/veilvoice/wiki)
-- [The roadmap](https://github.com/tilas01/veilvoice/blob/main/ROADMAP.md) and [the changelog](https://github.com/tilas01/veilvoice/blob/main/CHANGELOG.md)
+- [tilas01/veilvoice](https://github.com/tilas01/veilvoice): the program, its releases, the manual and the roadmap.
+- **tilas01/veilvoice-website**: this repository, the website.
+- **VeilVoice IPS** (Integrity Protection Service): an optional companion that watches for tampering. Its repository is being set up, and this list will link to it once it is public.
 
-The [`veilvoice`](veilvoice) folder in this repository is a link to that repository, pinned to the commit the site was built from.
+## What is in here
 
-## How this repository is made
+| Folder | What it holds |
+| --- | --- |
+| [`site/`](site) | The website itself, ready to serve. Every page, picture and script. |
+| [`tools/import-site.py`](tools/import-site.py) | Copies the website from a VeilVoice release into `site/`, at this address. |
+| [`hosting/local/`](hosting/local) | A small server for reading the site on your own computer. |
+| [`hosting/nginx/`](hosting/nginx) | The configuration for serving the site from your own server with nginx. |
+| [`tests/`](tests) | Checks run on every change. |
 
-The site is moving here from tilas01/veilvoice. Until the move is finished, it is still served at [tilas01.github.io/veilvoice](https://tilas01.github.io/veilvoice/), and that address will keep working afterwards.
+Only `site/` is published. The pages are generated from the VeilVoice sources, so to change what a page says, change its source in tilas01/veilvoice: an edit made directly in `site/` is replaced by the next import. The generators are moving into this repository next, and this section will say so when they have.
 
-In the meantime, [tilas01.github.io/veilvoice-website](https://tilas01.github.io/veilvoice-website/) serves a single page from [`site/`](site), which points to the full site. Only `site/` is published, by [the `pages` workflow](.github/workflows/pages.yml). Its home page carries the Google Search Console verification tag, which has to stay on whatever page is the home page after the move, or the site stops being verified.
+## Reading it on your own computer
 
-Every page here is generated. The generators are in tilas01/veilvoice, under [`tools/site/`](https://github.com/tilas01/veilvoice/tree/main/tools/site) and [`tools/docs/`](https://github.com/tilas01/veilvoice/tree/main/tools/docs). Once the move is done, each VeilVoice release rebuilds the site from the released commit and commits the result here, signed by the project key, so the site always describes a version you can download.
+You need Python 3.12 or later and nothing else.
 
-To change what a page says, change its source in tilas01/veilvoice. An edit made directly here is overwritten by the next release.
+```bash
+git clone https://github.com/tilas01/veilvoice-website.git
+cd veilvoice-website
+python3 hosting/local/serve.py
+```
 
-To look at the site on your own machine, clone tilas01/veilvoice and run `python tools/site/serve.py`. Every page also works with JavaScript switched off.
+Open the address it prints, normally <http://localhost:8000>. The server listens on your own computer only, so nothing else can reach it. It sends the same security headers as the real server, so a page that would break there breaks here first.
+
+`python3 hosting/local/serve.py --check` fetches every page once and reports any that fail.
+
+## Hosting it on a server
+
+[`hosting/nginx/veilvoice.conf`](hosting/nginx/veilvoice.conf) serves `site/` over HTTPS behind Cloudflare, with a strict Content-Security-Policy, HSTS and the other security headers in [`veilvoice-headers.conf`](hosting/nginx/veilvoice-headers.conf). It keeps no access log, so the server holds no record of who visited. Replace `your.domain` with your domain and follow the comments at the top of each file.
+
+## Importing a new release
+
+```bash
+python3 tools/import-site.py --from ../veilvoice                # the latest release
+python3 tools/import-site.py --from ../veilvoice --ref v0.1.23  # a particular one
+python3 tools/import-site.py --from ../veilvoice --check        # confirm site/ matches
+```
+
+It reads the release through git, so uncommitted work never reaches the site. It points every link at this website's address, keeps the 404 page out of the sitemap and adds the Google Search Console tag to the home page.
+
+## The Search Console tag
+
+The home page carries a `google-site-verification` tag. Google uses it to confirm that this site belongs to tilas01, and drops the site from Search Console the moment it disappears. It must stay on the home page for good. The importer adds it, the tests fail without it, and the publishing workflow refuses to publish a home page that lacks it.
+
+## How this repository is kept safe
+
+- **Every commit is signed** by tilas01.
+- **CodeQL** scans the scripts and workflows.
+- **zizmor** checks every workflow change. It is installed only if its hash matches the pinned one.
+- **OpenSSF Scorecard** compares the repository's settings with good practice.
+- **Dependabot** proposes updates to the pinned actions and to zizmor, each held back for seven days after release. Nothing merges by itself.
 
 ## Reporting a problem
 
-- **Something wrong on the website**, such as a broken page, a dead link or a download that does not match its checksum: [open an issue here](https://github.com/tilas01/veilvoice-website/issues).
+- **Something wrong on the website**, such as a broken page or a dead link: [open an issue here](https://github.com/tilas01/veilvoice-website/issues).
 - **Something wrong with the program**: [open an issue on tilas01/veilvoice](https://github.com/tilas01/veilvoice/issues).
-- **A security problem with either**: report it privately, as [SECURITY.md](SECURITY.md) explains. Please do not open a public issue for it.
-
-## Maintainers
-
-tilas01. Questions and reports go to the issue trackers above.
+- **A security problem with either**: report it privately, as [SECURITY.md](SECURITY.md) explains. Please don't open a public issue for it.
 
 ## Licence
 
-GPL-3.0-or-later © tilas01, the same as VeilVoice. See [LICENSE](LICENSE).
+GPL-3.0-or-later, copyright tilas01, the same as VeilVoice. The full text is in [LICENSE](LICENSE).

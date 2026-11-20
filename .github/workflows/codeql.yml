@@ -2,9 +2,10 @@
 #
 # Static analysis of everything in this repository that runs.
 #
-# Two things run here: the site's JavaScript in a visitor's browser, and these
-# workflows, which hold the token that can write to this repository. Both are
-# analysed as code rather than trusted as configuration.
+# Three things run here: the site's JavaScript in a visitor's browser, the
+# Python tools that import and serve the site, and these workflows, which hold
+# the token that can write to this repository. All three are analysed as code
+# rather than trusted as configuration.
 #
 # The security-extended query suite is used rather than the default. It adds
 # the queries that trace untrusted input further, including the one that flags
@@ -46,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [actions]
+        language: [actions, javascript-typescript, python]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:

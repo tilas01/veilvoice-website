@@ -11,3 +11,6 @@ Thumbs.db
 *.swp
 .vscode/
 .idea/
+
+# Python bytecode from running the tools and tests locally.
+__pycache__/

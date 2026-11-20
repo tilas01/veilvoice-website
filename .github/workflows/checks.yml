@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# The site's own checks: the Search Console tag is on the home page, the
+# importer moves addresses correctly, and the local server sends the same
+# security headers as the real one. Then every page is served once.
+
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.12'
+
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Every page loads with the security headers
+        run: python hosting/local/serve.py --check

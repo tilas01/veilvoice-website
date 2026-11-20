@@ -1,50 +1,1101 @@
 <!doctype html>
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
-<!-- The first page served from this repository. The full site is still
-     published from tilas01/veilvoice while it moves here, and this page
-     points to it until the move replaces it with the real home page. -->
-<html lang="en">
+<html lang="en" data-theme="tokyo-night">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google Search Console reads this tag to confirm that tilas01 controls this site.
+     It must stay on the home page for as long as the site is listed there. -->
+<meta name="google-site-verification" content="PrXwNiHGNWIM2txx_q0gUkifC33DUK5qk3cMkXYangc" />
 <title>VeilVoice: irreversible voice de-identification</title>
-<meta name="description" content="VeilVoice removes the biometric voiceprint from a recording, meaning pitch, formants, timbre and accent, while keeping the speech transcribable. Fully offline, free software under the GPL.">
+<meta name="description" content="VeilVoice destroys the biometric voiceprint, meaning pitch, formants, timbre and accent, while keeping speech transcribable. Fully offline, no unsafe code, reproducible builds, GPL-3.0.">
+<link rel="icon" href="assets/icon-32.png" type="image/png">
+<!-- Declarative, so it costs no script and works with JavaScript off.
+     Same-origin only: a prefetch is a real request, and a privacy tool
+     quietly reaching a third party to feel fast would undercut its own
+     argument. The megabyte-sized search index is NOT here on purpose --
+     js/prefetch.js fetches that one only when the connection is willing. -->
+<link rel="prefetch" href="wiki.html">
+<link rel="prefetch" href="search.html">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/main.css">
+<script src="js/theme.js"></script>
+<script src="js/prefetch.js" defer></script>
+<script src="js/legal.js" defer></script>
+<script src="js/reveal.js" defer></script>
+<script src="js/banner.js" defer></script>
+<script src="js/teleport.js" defer></script>
+<!-- Written by tools/site/seo.py. Edit that, not this. -->
 <link rel="canonical" href="https://tilas01.github.io/veilvoice-website/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VeilVoice">
 <meta property="og:url" content="https://tilas01.github.io/veilvoice-website/">
 <meta property="og:title" content="VeilVoice: irreversible voice de-identification">
-<meta property="og:description" content="VeilVoice removes the biometric voiceprint from a recording while keeping the speech transcribable. Fully offline, free software.">
-<meta property="og:image" content="https://tilas01.github.io/veilvoice/assets/banner.png">
+<meta property="og:description" content="VeilVoice destroys the biometric voiceprint, meaning pitch, formants, timbre and accent, while keeping speech transcribable. Fully offline, no unsafe code, reproducible builds, GPL-3.0.">
+<meta property="og:image" content="https://tilas01.github.io/veilvoice-website/assets/banner.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
 <meta property="og:image:alt" content="VeilVoice: irreversible voice de-identification">
 <meta name="twitter:card" content="summary_large_image">
-<!-- Google Search Console reads this tag to confirm that tilas01 controls
-     this site. Search Console unverifies the site if it is ever removed, so
-     it must stay here, and on whatever page becomes the home page after the
-     move, for as long as the site is listed there. The token is not a secret:
-     it proves control of the page and grants nothing to anyone who copies it. -->
-<meta name="google-site-verification" content="PrXwNiHGNWIM2txx_q0gUkifC33DUK5qk3cMkXYangc" />
-<style>
-  :root { color-scheme: light dark; --fg: #1a1b26; --bg: #f5f5f7; --link: #2e5aac; }
-  @media (prefers-color-scheme: dark) { :root { --fg: #c0caf5; --bg: #1a1b26; --link: #7aa2f7; } }
-  body { margin: 0; background: var(--bg); color: var(--fg);
-         font: 16px/1.6 ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; }
-  main { max-width: 42rem; margin: 0 auto; padding: 3rem 1rem; }
-  a { color: var(--link); }
-  h1 { font-size: 1.6rem; letter-spacing: 0.08em; }
-</style>
+<meta name="twitter:title" content="VeilVoice: irreversible voice de-identification">
+<meta name="twitter:description" content="VeilVoice destroys the biometric voiceprint, meaning pitch, formants, timbre and accent, while keeping speech transcribable. Fully offline, no unsafe code, reproducible builds, GPL-3.0.">
+<meta name="twitter:image" content="https://tilas01.github.io/veilvoice-website/assets/banner.png">
+<!-- end of the generated addresses -->
 </head>
 <body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <img src="assets/icon-32.png" alt="" width="32" height="32">
+      <a href="index.html">VEILVOICE</a>
+    </div>
+    <nav class="links">
+      <a href="#what">what</a>
+      <a href="#download">download</a>
+      <a href="#demo">demo</a>
+      <a href="#guide">guide</a>
+      <a href="#verify">verify</a>
+      <a href="#crypto">security</a>
+      <a href="faq.html">faq</a>
+      <a href="roadmap.html">roadmap</a>
+      <a href="releases.html">releases</a>
+      <a href="wiki.html">wiki</a>
+      <a href="reference/index.html">reference</a>
+      <a href="search.html">index</a>
+      <a href="https://github.com/tilas01/veilvoice" rel="noopener noreferrer">github</a>
+    </nav>
+    <!-- Controls, not navigation. The switch used to sit among the nav
+         links, where it read as another destination; it changes which
+         edition of the site you are served, which is the same kind of
+         choice as the colour scheme beside it. -->
+    <div class="controls">
+      <a class="js-toggle" href="nojs/index.html" role="switch" aria-checked="false"
+         title="Switch to the HTML-and-CSS edition. This does not turn JavaScript off in your browser -- it serves you pages that run no scripts at all.">
+        <span>JavaScript</span>
+        <span class="js-toggle-track" aria-hidden="true"><span class="js-toggle-knob"></span></span>
+        <span class="js-toggle-state js-when-on">on</span>
+        <span class="js-toggle-state js-when-off">off</span>
+        <span class="js-toggle-lock">(locked: scripts are not running)</span>
+      </a>
+      <label for="theme" style="position:absolute;left:-9999px">Colour scheme</label>
+      <select id="theme" class="theme-pick" title="Colour scheme"></select>
+    </div>
+  </div>
+</header>
+
 <main>
-<h1>VEILVOICE</h1>
-<p>VeilVoice removes the biometric voiceprint from a recording and keeps the words. Pitch, formants, timbre and accent are destroyed on your own machine, fully offline, so the speech can still be transcribed but not traced back to a voice.</p>
-<p>The website is moving to this address. Until the move is finished, the full site, with downloads, the manual and the roadmap, is at <a href="https://tilas01.github.io/veilvoice/">tilas01.github.io/veilvoice</a>.</p>
-<ul>
-  <li><a href="https://tilas01.github.io/veilvoice/">The VeilVoice website</a></li>
-  <li><a href="https://github.com/tilas01/veilvoice">The source code, tilas01/veilvoice</a></li>
-  <li><a href="https://github.com/tilas01/veilvoice/releases">Releases, with checksums and signatures</a></li>
-  <li><a href="https://github.com/tilas01/veilvoice-website">The website's repository, tilas01/veilvoice-website</a></li>
-</ul>
+
+<div class="wrap hero stagger">
+  <!-- The banner is drawn in CSS rather than served as a picture, so it
+       follows the reader's palette, its claims can be read aloud and searched,
+       and the reduced-motion rule at the top of main.css reaches every part of
+       it -- none of which a PNG can do. See the long note in main.css under
+       "the banner, drawn in CSS", including why it has no soundbar.
+
+       `aria-hidden` because the <h1> below states the same thing once, and a
+       reader using a screen reader should hear it once. The picture this
+       replaces was equally unreadable to them; nothing is lost here, and the
+       lines it shows all appear again in text further down the page.
+
+       The <noscript> copy is the animated GIF from the README. Nothing above
+       needs a script -- with scripts off the reader has chosen the edition of
+       this site that runs nothing, and one picture is the simpler thing to
+       serve them. -->
+  <div class="bn" style="--i:0" aria-hidden="true">
+    <span class="bn-sweep"></span>
+    <img class="bn-mark" src="assets/icon-32.png" alt="" width="32" height="32">
+    <p class="bn-word" data-word="VEILVOICE">VEILVOICE</p>
+    <p class="bn-sub">IRREVERSIBLE VOICE DE-IDENTIFICATION</p>
+    <p class="bn-claim">THE VOICEPRINT IS DESTROYED. THE WORDS STAY READABLE.</p>
+    <ul class="bn-lines">
+      <li class="bn-ok">FULLY OFFLINE</li>
+      <li class="bn-cyan">SECURE AUDITED RUST CODE</li>
+      <li class="bn-muted">GPL-3.0-OR-LATER</li>
+      <li class="bn-ok">BY TILAS01 ON GITHUB</li>
+    </ul>
+    <span class="bn-rule"></span>
+  </div>
+  <!-- Shown only to readers whose system asks for reduced motion, for whom the
+       banner keeps a slow sweep running; see "calmer, not frozen" in main.css.
+       Outside the aria-hidden banner so that it can be reached and announced. -->
+  <button type="button" class="bn-pause" aria-pressed="false">Pause the banner</button>
+  <noscript>
+    <img class="bn-fallback" src="assets/banner.gif"
+         alt="VeilVoice: irreversible voice de-identification"
+         width="1280" height="640">
+  </noscript>
+  <!-- The page had no h1 at all: the banner is an image, and an image is not a
+       heading. A screen reader's outline began at "WHAT IT ACTUALLY DOES", and
+       the document's own subject was never stated in text anywhere. Visually
+       hidden because the banner already says it far better in pixels; present
+       because a heading is for the reader who is not looking at pixels. -->
+  <h1 class="visually-hidden">VeilVoice: irreversible voice de-identification</h1>
+
+  <p class="tagline" style="--i:1">
+    VeilVoice destroys the <strong>biometric voiceprint</strong> of a speaker,
+    meaning pitch, formants, timbre, micro-timing and the melody of an accent, so that
+    neither software nor a human can re-identify them or reconstruct the
+    original voice, <strong>while the words stay clean and transcribable</strong>.
+  </p>
+
+
+  <div class="row" style="--i:2">
+    <a class="btn primary" href="#download">download</a>
+    <a class="btn" href="#verify">verify a download</a>
+    <a class="btn" href="https://github.com/tilas01/veilvoice" rel="noopener noreferrer">source</a>
+  </div>
+
+  <!--
+    A slowly cycling line of things that are true about this project.
+
+    Text rather than an image, and CSS rather than JavaScript. An
+    animated image of this many messages at a readable pace would be
+    minutes long and megabytes large; its text could not be selected,
+    searched or read aloud; and it would be baked in one palette while
+    the site has eight. One finding was this project's own claims
+    rendered illegibly inside an image, which is reason enough to keep
+    claims out of images.
+
+    Every line here is checkable, and several of them are limits rather
+    than boasts -- deliberately. A rotating list of good news is exactly
+    where an overclaim would go unnoticed.
+
+    The count is mirrored in `--fact-count` in main.css, because the
+    keyframe percentages depend on it. A site test compares the two, so
+    adding a line here without updating the stylesheet fails the build
+    rather than silently overlapping two messages.
+  -->
+  <div class="facts" style="--i:3" aria-label="About this project">
+    <span class="fact" style="--f:0;--c:var(--ok)">No network code in the dependency graph</span>
+    <span class="fact" style="--f:1;--c:var(--cyan)">CI fails the build if an HTTP client appears</span>
+    <span class="fact" style="--f:2;--c:var(--ok)">No unsafe code, in any of the 13 crates</span>
+    <span class="fact" style="--f:3;--c:var(--accent)">1965 tests, and 21 more suites for the website</span>
+    <span class="fact" style="--f:4;--c:var(--cyan)">Reproducible builds: each target built twice, and compared</span>
+    <span class="fact" style="--f:5;--c:var(--accent-2)">Releases signed; the fingerprint is published everywhere</span>
+    <span class="fact" style="--f:6;--c:var(--accent)">Measured phase is discarded every frame, and never stored</span>
+    <span class="fact" style="--f:7;--c:var(--accent-2)">Every speaker is mapped onto one canonical voice</span>
+    <span class="fact" style="--f:8;--c:var(--accent-2)">Many-to-one, so there is no inverse to compute</span>
+    <span class="fact" style="--f:9;--c:var(--cyan)">Modulation seeded by ChaCha20; the seed never leaves the process</span>
+    <span class="fact" style="--f:10;--c:var(--cyan)">A forward-secure ratchet, every two seconds</span>
+    <span class="fact" style="--f:11;--c:var(--ok)">Recordings are encrypted at rest by default</span>
+    <span class="fact" style="--f:12;--c:var(--accent)">X25519 + ML-KEM-768: hybrid, post-quantum</span>
+    <span class="fact" style="--f:13;--c:var(--accent)">XChaCha20-Poly1305, and Argon2id</span>
+    <span class="fact" style="--f:14;--c:var(--warn)">The app lock is a verifier, not disk encryption</span>
+    <span class="fact" style="--f:15;--c:var(--warn)">Tamper detection detects; it does not prevent</span>
+    <span class="fact" style="--f:16;--c:var(--warn)">Secure erase is unreliable on flash, and the docs say so</span>
+    <span class="fact" style="--f:17;--c:var(--warn)">Accent removal is partial, and that limit is documented</span>
+    <span class="fact" style="--f:18;--c:var(--ok)">Metadata stripped: tags, EXIF, GPS</span>
+    <span class="fact" style="--f:19;--c:var(--ok)">No telemetry. No accounts. No automatic update check</span>
+    <span class="fact" style="--f:20;--c:var(--accent)">Ten platforms, from one reproducible build</span>
+    <span class="fact" style="--f:21;--c:var(--accent-2)">The artwork is generated by a script you can read</span>
+    <span class="fact" style="--f:22;--c:var(--accent-2)">Every crate and every source file has a generated page</span>
+    <span class="fact" style="--f:23;--c:var(--cyan)">308 defects found and fixed across forty audit rounds</span>
+    <span class="fact" style="--f:24;--c:var(--ok)">A complete edition of this site that runs no scripts</span>
+    <span class="fact" style="--f:25;--c:var(--muted)">Free software, GPL-3.0-or-later</span>
+  </div>
+
+  <!--
+    This message lives in <noscript>, and the same point is repeated in the
+    welcome dialog. That is not duplication for its own sake: the dialog is
+    drawn by `js/legal.js`, so a reader with JavaScript off never sees it. A
+    notice about having JavaScript off has to be somewhere that works with
+    JavaScript off.
+  -->
+  <noscript>
+    <div class="noscript-banner">
+      <strong>JavaScript is off, so this site will not be displayed with it.
+      You are being served the HTML and CSS only.</strong>
+      This page still reads fine that way, but the hash verifier and the live
+      repository panel need scripts and will not appear. The
+      <a href="nojs/index.html">JavaScript-free edition</a> is built for this
+      and has everything in the page, including a
+      <a href="nojs/search.html">complete search index</a> your browser's own
+      find-in-page can search.
+      <br><br>
+      The <strong>JavaScript</strong> switch in the header shows <em>off</em>
+      and is locked, because nothing on a page can turn scripts back on -- only
+      your browser can.
+    </div>
+  </noscript>
+</div>
+
+<section id="how">
+  <div class="wrap">
+  <h2>WHAT HAPPENS TO YOUR RECORDING</h2>
+
+  <figure class="journey">
+    <!--
+      The product in one picture: a file goes in, the voiceprint is destroyed,
+      a file comes out with the same words in a voice that is not yours.
+
+      Text and CSS, not an image and not a script -- the same three reasons as
+      the banner. It follows the reader's palette, every claim in it can be
+      selected and read aloud, and `prefers-reduced-motion` reaches it. The
+      whole sequence is one eight-second cycle; each part animates for its own
+      share of it and rests for the remainder, so nothing here needs the parts
+      to be told about each other.
+
+      Deliberately not another waveform. The section below this one is two
+      waveforms and the mark between them, and it is about what the *signal*
+      does. This one is about what *you* do, so it is files and labels.
+    -->
+    <ol class="jr-flow" aria-hidden="true">
+      <li class="jr-step">
+        <span class="jr-card" style="--at:0s">
+          <span class="jr-name">interview.wav</span>
+          <span class="jr-fact"><span class="jr-key">voiceprint</span> <b class="jr-warn">present</b></span>
+          <span class="jr-fact"><span class="jr-key">words</span> <b>yours</b></span>
+        </span>
+        <span class="jr-caption">what you recorded</span>
+      </li>
+
+      <li class="jr-link"><span class="jr-packet" style="--at:0.9s"></span></li>
+
+      <li class="jr-step">
+        <span class="jr-card jr-engine" style="--at:2.2s">
+          <img class="jr-mark" src="assets/icon-32.png" alt="" width="32" height="32">
+          <span class="jr-name">veilvoice</span>
+          <span class="jr-fact"><span class="jr-key">phase</span> <b>discarded</b></span>
+          <span class="jr-ring" style="--at:2.2s"></span>
+        </span>
+        <span class="jr-caption">on your machine, offline</span>
+      </li>
+
+      <li class="jr-link"><span class="jr-packet jr-packet-out" style="--at:4.3s"></span></li>
+
+      <li class="jr-step">
+        <span class="jr-card jr-done" style="--at:5.4s">
+          <span class="jr-name">interview-veiled.wav</span>
+          <span class="jr-fact"><span class="jr-key">voiceprint</span> <b class="jr-ok">destroyed</b></span>
+          <span class="jr-fact"><span class="jr-key">words</span> <b>unchanged</b></span>
+        </span>
+        <span class="jr-caption">the same words, in a voice that is not yours</span>
+      </li>
+    </ol>
+
+    <p class="jr-offline" aria-hidden="true">
+      <svg class="jr-offline-mark" viewBox="0 0 16 16" width="13" height="13"
+           focusable="false" aria-hidden="true">
+        <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <line x1="3.7574" y1="12.2426" x2="12.2426" y2="3.7574"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      nothing leaves this machine
+    </p>
+
+    <figcaption>
+      <strong>What goes in is a file; what comes out is a file.</strong> There
+      is no account, no upload and no queue: the whole of it happens on the
+      machine you are sitting at, and CI fails the build if a network client
+      appears anywhere in the dependency graph.
+      <br><br>
+      <strong>What this picture does not show is the limit.</strong> The
+      voiceprint goes; <em>what you said</em> stays, because the output is
+      meant to be listened to and transcribed. If the words themselves identify
+      you: a name, a place, a story only you could tell. VeilVoice has not
+      touched that and does not claim to. Segmental accent cues, which phonemes
+      you actually produced, survive for the same reason. See
+      <a href="#crypto">security and cryptography</a> for the full scope.
+    </figcaption>
+  </figure>
+  </div>
+</section>
+
+<section id="what">
+  <div class="wrap">
+    <h2>WHAT IT ACTUALLY DOES</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Anonymise a recording</h3>
+        <p>wav, mp3, flac, ogg, m4a in, a clean WAV out, with metadata stripped. Roughly 90× faster than real time.</p>
+      </div>
+      <div class="card">
+        <h3>Scramble a microphone live</h3>
+        <p>Route the veiled voice into a virtual audio cable and every application on the machine, whether calls, streams or recorders, receives it instead of you.</p>
+      </div>
+      <div class="card">
+        <h3>Encrypt at rest, by default</h3>
+        <p>Every recording is sealed as it is written, using an <span class="tip-right" data-tip="Two key agreements combined, so the result is safe unless both are broken. X25519 is the long-established one; ML-KEM-768 is the post-quantum standard." aria-label="Two key agreements combined, so the result is safe unless both are broken. X25519 is the long-established one; ML-KEM-768 is the post-quantum standard.">X25519 + ML-KEM-768 hybrid</span>, so one captured today is not readable by a quantum adversary tomorrow. Turning that off makes you read why first.</p>
+      </div>
+      <div class="card">
+        <h3>Lock the app</h3>
+        <p>A separate password gates the desktop app, rate limited and <span data-tip="A password-hashing function designed to be slow and memory-hungry, so guessing at scale costs real hardware." aria-label="A password-hashing function designed to be slow and memory-hungry, so guessing at scale costs real hardware.">Argon2id</span>-derived. It stops someone who picks up your unlocked computer. It is not tamper-proof, and the unlock screen says so.</p>
+      </div>
+      <div class="card">
+        <h3>Strip metadata</h3>
+        <p>Audio tags, image EXIF and GPS. A de-identified voice is worthless if the file still says who recorded it, where, and on what.</p>
+      </div>
+      <div class="card">
+        <h3>Work as a Rust library</h3>
+        <p>Every crate is a normal dependency. The engine is allocation-free and safe to call from inside an audio callback.</p>
+      </div>
+      <div class="card">
+        <h3>Transcribe without giving up your voice</h3>
+        <p>Speech-to-text needs the words, not the voiceprint. Anonymise first and the service gets speech it can transcribe and a voice belonging to nobody.</p>
+      </div>
+      <div class="card">
+        <h3>See what is listening</h3>
+        <p>Which applications are holding your microphone or camera, right now, with an alert the moment one starts. De-identifying a call achieves little if a second program is recording the raw microphone beside it. macOS exposes no interface for this, so nothing is reported there rather than something guessed.</p>
+      </div>
+      <div class="card">
+        <h3>Detect tampering with its own files</h3>
+        <p>A signed manifest of what VeilVoice should be, and a check that reports what changed. Where the system's own auditing allows it, it names the program responsible, and says plainly when it cannot see, rather than implying nothing happened.</p>
+      </div>
+      <div class="card">
+        <h3>Erase a recording</h3>
+        <p>Overwrite and unlink, with an honest account of what that is worth. On flash storage the controller may have written the data somewhere the filesystem can no longer reach, so this is not a guarantee and is not described as one.</p>
+      </div>
+      <div class="card">
+        <h3>Verify a download without GnuPG</h3>
+        <p><code>veilvoice verify</code> is part of the program you downloaded, and the desktop application's Verify tab runs the same code. The signing key is compiled in, so it checks the signature over the hash list and then the file on a machine with no GnuPG and no network. It distinguishes a download being <em>intact</em> from a build being <em>reproducible</em>, because those are different claims.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>Honest scope.</strong> “Fill the spectrogram with noise” and
+      “stay understandable” are mutually exclusive, because noise that covers the voice
+      covers the words. VeilVoice targets the achievable goal: irreversible
+      speaker de-identification with intelligibility preserved <em>on purpose</em>.
+      If the <em>message</em> must also be secret, encrypt it; that is a separate
+      problem with a separate answer.</p>
+      <p>The same applies to <strong>accent</strong>. Its melody and colour do not
+      survive. What no signal-level transform can change is <em>which phonemes you
+      produced</em>, and at that level the accent and the words are the same thing, so
+      a strong regional accent may still be audible.</p>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <h2>DOWNLOAD</h2>
+    <p class="lede">
+      Latest release: <b id="latest-tag" style="color:var(--cyan)">see GitHub</b>.
+      Every binary is built twice in separate directories and verified
+      byte-identical before it ships.
+    </p>
+
+    <div class="row" style="justify-content:flex-start">
+      <a class="btn primary" href="https://github.com/tilas01/veilvoice/releases/latest" rel="noopener noreferrer">all releases</a>
+      <a class="btn" href="https://github.com/tilas01/veilvoice#install" rel="noopener noreferrer">build from source</a>
+    </div>
+
+    <h3>Files in the latest release</h3>
+    <ul id="asset-list">
+      <li class="lede">The current list of files is on
+        <a href="https://github.com/tilas01/veilvoice/releases/latest" rel="noopener noreferrer">the releases page</a>.</li>
+    </ul>
+
+    <div class="note">
+      <p><strong>Always verify before you run it.</strong> A download can be
+      corrupted in transit or replaced entirely. Two independent checks are
+      published with every release: a SHA-256 for each file, and an OpenPGP
+      signature over that hash list. The <a href="#verify">in-browser
+      verifier</a> does the first one for you.</p>
+    </div>
+  </div>
+</section>
+
+<section id="guide">
+  <div class="wrap">
+    <h2 class="reveal">SO YOU HAVE DOWNLOADED IT, NOW WHAT</h2>
+    <p class="lede reveal" style="--i:1">
+      There are two programs in the archive: <code>veilvoice-gui</code>, the
+      desktop app, and <code>veilvoice</code>, the command line. They share one
+      engine, so anything one can do the other can. Nothing installs a service,
+      writes to a registry, or phones home. Delete the folder and it is gone.
+    </p>
+
+    <ol class="steps">
+      <li class="step reveal">
+        <h3>Give it a recording</h3>
+        <p>
+          wav, mp3, flac, ogg, m4a and friends. Open the desktop app on the
+          <b>anonymise file</b> tab and choose one, or point the command line at
+          it. Roughly 90× faster than real time, so an hour of audio takes well
+          under a minute.
+        </p>
+<pre><code>veilvoice anonymise interview.mp3 -o clean.wav</code></pre>
+      </li>
+
+      <li class="step reveal">
+        <h3>The voiceprint is destroyed, the words are kept</h3>
+        <p>
+          Each frame's measured phase is thrown away and resynthesised, and
+          pitch register, vocal-tract length and spectral tilt are each
+          collapsed onto one canonical value, so a whole population of speakers
+          lands on the same output and there is nothing left to invert. What
+          comes out is understandable, transcribable, and belongs to nobody.
+        </p>
+        <!--
+          Moved here from the hero, where it sat directly under the animated
+          banner: two waveforms animating at once read as decoration competing
+          with itself, and neither was saying anything the other was not.
+
+          Here it has a job. Left, blue, even: a voice as it was. Right, purple,
+          out of step: the same energy with the structure that identified the
+          speaker gone. That is the sentence above, drawn.
+        -->
+        <figure class="veil-figure">
+          <div class="veil" aria-hidden="true">
+    <span style="animation-delay:0ms"></span><span style="animation-delay:120ms"></span>
+    <span style="animation-delay:240ms"></span><span style="animation-delay:80ms"></span>
+    <span style="animation-delay:300ms"></span><span style="animation-delay:180ms"></span>
+    <span class="veiled" style="animation-delay:60ms"></span>
+    <span class="veiled" style="animation-delay:420ms"></span>
+    <span class="veiled" style="animation-delay:220ms"></span>
+    <span class="veiled" style="animation-delay:500ms"></span>
+    <span class="veiled" style="animation-delay:140ms"></span>
+    <span class="veiled" style="animation-delay:360ms"></span>
+  </div>
+          <figcaption>
+            The same energy, and no shared structure. Left, a voice as it was
+            recorded; right, what is left after the phase relationship that
+            identified the speaker has been destroyed. The words survive the
+            journey; the speaker does not.
+          </figcaption>
+        </figure>
+        <p>
+        </p>
+      </li>
+
+      <li class="step reveal">
+        <h3>It is encrypted before it reaches the disk</h3>
+        <p>
+          The result is sealed into a <code>.veil</code> container as it is
+          written, so <code>-o clean.wav</code> produces
+          <code>clean.wav.veil</code>. The WAV is built in memory and encrypted
+          there, so the plaintext never exists on disk, not even for a moment,
+          because a file that is written and then deleted cannot be reliably
+          taken back on flash storage.
+        </p>
+<pre><code>veilvoice decrypt clean.wav.veil -o clean.wav   # when you want it back</code></pre>
+      </li>
+
+      <li class="step reveal">
+        <h3>Or scramble your microphone as you speak</h3>
+        <p>
+          The <b>Studio</b> tab routes your veiled voice into a virtual
+          audio cable. Every application on the machine, whether a call, a stream or a
+          recorder, then receives that instead of you, with no per-app setup. The
+          same tab keeps a take of it, sealed into a vault, when you ask for one.
+        </p>
+      </li>
+
+      <li class="step reveal">
+        <h3>Check nothing else is listening</h3>
+        <p>
+          De-identifying your voice on a call achieves little if a second
+          program is recording the raw microphone at the same time. The
+          <b>monitor</b> tab names what is holding your microphone and camera
+          and warns the moment something starts.
+        </p>
+      </li>
+
+      <li class="step reveal">
+        <h3>Lock the app behind you</h3>
+        <p>
+          Set a password on the <b>lock</b> tab and VeilVoice will not open
+          without it. The <b>lock</b> button in the header locks it immediately
+          and clears the session passphrase with it.
+        </p>
+      </li>
+    </ol>
+
+    <h3 class="reveal">The two passwords, and why there are two</h3>
+    <div class="compare">
+      <div class="lock reveal">
+        <h4>The app lock</h4>
+        <p>Decides whether VeilVoice opens at all. Argon2id verifier, rate limited, three attempts free and then a doubling wait.</p>
+      </div>
+      <div class="vault reveal" style="--i:1">
+        <h4>The recording passphrase</h4>
+        <p>Encrypts the files it writes. Argon2id at 256 MiB, or seal to a post-quantum hybrid public key instead.</p>
+      </div>
+    </div>
+    <p class="lede reveal">
+      They are deliberately different secrets. If one password did both, then
+      opening the app would be the same act as unsealing everything it had ever
+      written, which is the opposite of what a lock is for. VeilVoice keeps the two
+      derivations domain-separated, so typing the same passphrase in both places
+      still does not produce two copies of one value. Use two anyway: one guess
+      that opens both defeats the point regardless of the maths.
+    </p>
+
+    <div class="note bad reveal">
+      <p><strong>The app lock is not tamper-proof, and cannot be.</strong> A
+      program running on your computer has nowhere to hide a secret from that
+      computer: anyone who can write to your files can delete the lock, and
+      anyone holding the disk can attack the stored password hash offline. It
+      protects against <em>casual access</em>, meaning the person who sits down at your
+      unlocked session, which is a real and common threat, and is exactly what
+      the unlock screen says it is for. If someone taking your disk is the
+      threat, encrypt the whole volume.</p>
+    </div>
+
+    <div class="row reveal" style="justify-content:flex-start">
+      <a class="btn primary" href="wiki.html">read the wiki</a>
+      <a class="btn" href="wiki.html#applock">the app lock in detail</a>
+      <a class="btn" href="#crypto">how it works</a>
+    </div>
+  </div>
+</section>
+
+<!--
+  The demonstration. Left is a voice: bars in step, the crest travelling along
+  them. Right is the same voice afterwards: same energy, no shared phase. The
+  mark between them lights as the signal passes through.
+
+  Everything here is CSS. A GIF would bake in one palette while the site has
+  nine, could not be selected or read aloud, and would cost a download; and the
+  text below is the part that actually makes the argument, so it is text.
+
+  `aria-hidden` on the animation itself: it is an illustration of the sentence
+  underneath, and describing sixty animated bars to a screen reader would be
+  noise in place of the sentence.
+-->
+<section id="look">
+  <div class="wrap">
+  <h2>WHAT IT LOOKS LIKE</h2>
+
+  <p class="lead">
+    Every picture here is of the current build. The window captures are taken by
+    a script that drives the release build and photographs each tab, and the
+    terminal drawings are generated from the command output committed beside
+    them, so a picture that disagrees with the program fails the build
+    rather than sitting here saying something untrue.
+  </p>
+
+  <!--
+    `loading="lazy"` on every one. Ten window captures is a little over a
+    megabyte, and the front page should not spend that before the reader has
+    scrolled to them. The width and height attributes are on the images as
+    well, so the layout does not jump when each one arrives -- a page that
+    reflows under a reader who is mid-sentence is a worse fault than a slow
+    image.
+
+    All ten are the same size, 1400 by 1537, and the terminal drawings below
+    them share one width. A grid whose rows step because one panel is taller
+    reads as the pictures being wrong rather than the panels being different
+    lengths, which is why the size is measured across the set on every run
+    rather than left to whatever each capture happened to need.
+  -->
+  <p class="lead" style="margin-bottom:20px">
+    Every one of these is below in the demonstration too, one at a time and
+    larger. <a href="#demo">Go there</a> to watch the command line type itself
+    out first.
+  </p>
+
+  <div class="shots">
+      <figure class="shot">
+        <a href="#see-file" aria-label="View Anonymise a file full size"><img src="assets/screenshots/gui-file.png" alt="Anonymise a file" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Anonymise a file</strong> One recording in, a voice nobody owns out. Encrypted at rest by default.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-group" aria-label="View Group mode full size"><img src="assets/screenshots/gui-group.png" alt="Group mode" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Group mode</strong> Several people in one recording, a name and a colour each, a different voice each.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-studio" aria-label="View Recording Studio full size"><img src="assets/screenshots/gui-studio.png" alt="Recording Studio" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Recording Studio</strong> A microphone, scrambled as it runs, into a virtual cable anything else can hear, and a take kept straight into a locked vault if you want one. The vault opens with both passphrases at once, and with neither on its own.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-browser" aria-label="View Recording Browser full size"><img src="assets/screenshots/gui-browser.png" alt="Recording Browser" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Recording Browser</strong> What is in the vault, listed without opening any of it. Play one out of locked memory, take it out as a page or a video, or fill the folder with decoys so which vault is yours stops being visible.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-monitor" aria-label="View Monitor full size"><img src="assets/screenshots/gui-monitor.png" alt="Monitor" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Monitor</strong> Which programs are using the microphone and the camera, and what this cannot see.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-lock" aria-label="View Lock full size"><img src="assets/screenshots/gui-lock.png" alt="Lock" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Lock</strong> The app lock, and a plain account of what it is and is not worth.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-verify" aria-label="View Verify a download full size"><img src="assets/screenshots/gui-verify.png" alt="Verify a download" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Verify a download</strong> Drop the download, the SHA256SUMS and its signature on the window. Nothing is fetched, and the key is compiled in.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-settings" aria-label="View Settings full size"><img src="assets/screenshots/gui-settings.png" alt="Settings" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Settings</strong> Nine palettes, your own if you write one, motion, and which tabs are shown.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-install" aria-label="View Install full size"><img src="assets/screenshots/gui-install.png" alt="Install" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>Install</strong> Offered only to a portable copy. An installed one does not show this tab.</figcaption>
+      </figure>
+      <figure class="shot">
+        <a href="#see-about" aria-label="View About full size"><img src="assets/screenshots/gui-about.png" alt="About" loading="lazy" width="1400" height="1616"></a>
+        <figcaption><strong>About</strong> Versions, scope, and the update check that happens when you press it.</figcaption>
+      </figure>
+  </div>
+
+  <h3>The command line</h3>
+  <p class="lead">
+    Everything the window does, and some things it does not. These are drawings
+    rather than photographs: they follow your palette, and the text in them can
+    be selected and searched.
+  </p>
+
+  <div class="casts">
+      <figure class="cast">
+        <img src="assets/screenshots/cli-help.svg" alt="veilvoice --help" loading="lazy" width="834" height="1012">
+        <figcaption>veilvoice --help</figcaption>
+      </figure>
+      <figure class="cast">
+        <img src="assets/screenshots/cli-conversation.svg" alt="veilvoice conversation --help" loading="lazy" width="834" height="575">
+        <figcaption>veilvoice conversation --help</figcaption>
+      </figure>
+      <figure class="cast">
+        <img src="assets/screenshots/cli-anonymise.svg" alt="veilvoice anonymise --help" loading="lazy" width="834" height="1183">
+        <figcaption>veilvoice anonymise --help</figcaption>
+      </figure>
+      <figure class="cast">
+        <img src="assets/screenshots/cli-render.svg" alt="veilvoice conversation render --help" loading="lazy" width="834" height="1715">
+        <figcaption>veilvoice conversation render --help</figcaption>
+      </figure>
+      <figure class="cast">
+        <img src="assets/screenshots/cli-preview.svg" alt="veilvoice conversation preview --help" loading="lazy" width="834" height="1221">
+        <figcaption>veilvoice conversation preview --help</figcaption>
+      </figure>
+      <figure class="cast">
+        <img src="assets/screenshots/cli-companions.svg" alt="veilvoice companions --help" loading="lazy" width="834" height="423">
+        <figcaption>veilvoice companions --help</figcaption>
+      </figure>
+  </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="wrap">
+  <h2>WHAT IT SOUNDS LIKE, IN ONE PICTURE</h2>
+
+  <figure class="demo">
+    <div class="demo-flow" aria-hidden="true">
+      <div class="demo-side">
+        <div class="demo-wave demo-clean">
+          <span style="--d:-0ms"></span><span style="--d:-333ms"></span><span style="--d:-666ms"></span><span style="--d:-999ms"></span><span style="--d:-1332ms"></span><span style="--d:-1665ms"></span><span style="--d:-1998ms"></span><span style="--d:-2331ms"></span><span style="--d:-2664ms"></span><span style="--d:-2997ms"></span><span style="--d:-3330ms"></span><span style="--d:-3663ms"></span>
+        </div>
+        <p class="demo-label">Normal voice</p>
+      </div>
+
+      <div class="demo-core">
+        <img class="demo-mark" src="assets/icon-32.png" alt="" width="32" height="32">
+        <ol class="demo-stages">
+          <li style="--s:0"><i class="demo-dot"></i>framed, 1024 samples</li>
+          <li style="--s:1"><i class="demo-dot"></i>phase measured</li>
+          <li style="--s:2"><i class="demo-dot"></i>phase discarded</li>
+          <li style="--s:3"><i class="demo-dot"></i>pitch and formants moved</li>
+          <li style="--s:4"><i class="demo-dot"></i>modulation seed rolled</li>
+          <li style="--s:5"><i class="demo-dot"></i>words left alone</li>
+        </ol>
+      </div>
+
+      <div class="demo-side">
+        <div class="demo-wave demo-veiled">
+          <span style="--d:-310ms;--t:1.7s"></span><span style="--d:-80ms;--t:2.3s"></span><span style="--d:-640ms;--t:1.9s"></span><span style="--d:-220ms;--t:2.6s"></span><span style="--d:-900ms;--t:1.6s"></span><span style="--d:-430ms;--t:2.1s"></span><span style="--d:-150ms;--t:2.8s"></span><span style="--d:-760ms;--t:1.8s"></span><span style="--d:-520ms;--t:2.4s"></span><span style="--d:-40ms;--t:2.0s"></span><span style="--d:-680ms;--t:2.7s"></span><span style="--d:-270ms;--t:1.5s"></span>
+        </div>
+        <p class="demo-label demo-label-veiled">Anonymised voice</p>
+      </div>
+    </div>
+
+    <figcaption>
+      <p><strong>The bars marked &ldquo;normal voice&rdquo; are in step with one
+      another.</strong> That
+      shared phase relationship is most of what makes a voice recognisable as
+      <em>yours</em>: the precise waveform, the micro-timing, the way your
+      vocal tract shapes every harmonic.</p>
+
+      <p><strong>The bars marked &ldquo;anonymised voice&rdquo; carry the same
+      energy and none of the
+      relationship.</strong> The list between them is what actually happens, in
+      order, and it is six steps rather than one:</p>
+
+      <ol class="demo-steps">
+        <li><strong>Framed.</strong> The audio is cut into overlapping frames of
+        1024 samples and each one is turned into frequencies. Everything below
+        happens per frame, which at 48 kHz is about 187 times a second.</li>
+
+        <li><strong>Phase measured.</strong> A frame has a magnitude, which is
+        how much of each frequency there is, and a phase, which is how those
+        frequencies line up in time. The second one is a great deal of what
+        makes a voice recognisably yours.</li>
+
+        <li><strong>Phase discarded.</strong> Not scrambled, not encrypted, not
+        hidden: thrown away and replaced, and never written anywhere. That is
+        the step with no inverse. Nothing is left from which the original
+        timing could be recovered, by us or by anybody else.</li>
+
+        <li><strong>Pitch and formants moved.</strong> Every speaker is mapped
+        onto one canonical register and one vocal-tract scale. Many voices in,
+        one set of characteristics out, which is the other reason there is
+        nothing to undo: several different people arrive at the same place.</li>
+
+        <li><strong>Modulation seed rolled.</strong> How far things move is
+        drawn from a cryptographic random stream, and that stream rolls forward
+        at an interval drawn fresh at every launch. Audio from before a roll is
+        sealed off behind it, so there is no fixed period to observe.</li>
+
+        <li><strong>Words left alone.</strong> None of it touches which words
+        were said.</li>
+      </ol>
+
+      <p><strong>The words survive all of it.</strong> The output is meant to be
+      listened to, shared, understood and transcribed. That is the whole
+      design: a scrambler you cannot understand protects nobody, because
+      nobody uses it.</p>
+    </figcaption>
+  </figure>
+
+  <!--
+    The demonstration proper, in two halves and both of them on the page.
+
+    **The command line is offered first, whole, and the window is under it.**
+
+    Both of those used to be untrue. The order was the command line typed out,
+    then the window, then the command line again one job at a time, so the two
+    halves of the same demonstration had the other demonstration wedged between
+    them. A reader who wanted to see what the commands are read about them,
+    looked at pictures of a window, and then read about the commands again.
+
+    The command line goes first because it is the half that can be *shown*
+    rather than depicted: these are recordings of the real programs replayed at
+    typing speed, and every byte in them is what the program wrote. The window
+    follows, as photographs the build re-takes, one per screen. Somebody who
+    reaches the pictures has already seen the program run.
+
+    Which is also why nothing here is behind a button. There used to be a third
+    thing, a model of the application drawn in CSS and opened from one. It was a
+    drawing of an interface sitting beside photographs of the same interface,
+    which asks a reader to decide which to believe.
+  -->
+  <div class="walk">
+    <h3 class="walk-h walk-h-cli" id="cli-walkthrough">THE COMMAND LINE, TYPED OUT</h3>
+    <p class="walk-lede">Five sessions, recorded from the real programs on a
+    real terminal, prompts and passphrases included. Pick one and it types
+    itself out. The only invented thing is the speed: a session that arrives
+    all at once is a paste rather than a session.</p>
+
+    <div id="cli-demo" class="term"></div>
+    <noscript>
+      <p class="walk-lede">These play with scripts on. With scripts off, the
+      drawings of each help screen are <a href="#look">above</a>, and the same
+      transcripts are in <code>assets/screenshots/</code> in the
+      repository.</p>
+    </noscript>
+
+    <h3 class="walk-h walk-h-cli">THE COMMAND LINE, ONE JOB AT A TIME</h3>
+    <p class="walk-lede">Each of these is a real command. Every one is checked
+    against this build's own <code>--help</code> when the page is generated, so
+    a command here that no longer exists stops the build rather than teaching
+    you something that fails.</p>
+    <div class="walk-cases"></div>
+  </div>
+
+  <div id="walkthrough" class="walk">
+    <h3 class="walk-h">EVERY SCREEN, AND WHAT IT IS FOR</h3>
+    <p class="walk-lede">Photographs of the real window, one per tab. Pick a
+    tab and its picture is below. These are captures of the program running,
+    not drawings of it, and the build re-takes them so a screen that changes
+    cannot leave a stale picture here.</p>
+
+    <div class="walk-tabs" role="tablist" aria-label="Application screens"></div>
+    <figure class="walk-shot">
+      <img id="walk-img" alt="" loading="lazy" decoding="async" width="1400" height="1550">
+      <figcaption id="walk-note"></figcaption>
+    </figure>
+  </div>
+  </div>
+</section>
+
+<section id="verify">
+  <div class="wrap">
+    <h2>VERIFY A DOWNLOAD</h2>
+    <p class="lede">
+      Drop the file you downloaded here. It is hashed <strong>locally, in your
+      browser</strong>, using the built-in WebCrypto API, so there is no upload
+      and no server that could receive it. Read
+      <a href="js/verify.js">js/verify.js</a>; that file is the whole
+      implementation.
+    </p>
+
+    <div class="tool">
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a file to hash">
+        click or drop a release archive here
+      </div>
+      <input type="file" id="file" hidden>
+      <progress id="progress" value="0" max="1" style="display:none"></progress>
+      <div class="hash" id="digest">no file hashed yet</div>
+      <label for="expected" style="font-size:12.5px;color:var(--muted)">
+        Paste the expected hash, or a whole line from <code>SHA256SUMS</code>:
+      </label>
+      <input type="text" id="expected" placeholder="e.g. 6326e019…  veilvoice-v0.1.1-linux-x86_64.tar.gz" spellcheck="false">
+      <div class="verdict" id="verdict" style="display:none"></div>
+    </div>
+
+    <h3>The stronger check: the signature</h3>
+    <p class="lede">
+      A hash proves the file matches a list. The <em>signature</em> proves the
+      list came from the maintainer. Browsers cannot verify OpenPGP, so this
+      part runs on your machine:
+    </p>
+<pre><code>gpg --import veilvoice-signing-key.asc
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum -c SHA256SUMS --ignore-missing</code></pre>
+    <p class="lede">
+      Signing key fingerprint. Check that <code>gpg --verify</code> names this
+      exact key, not merely “a good signature”:
+    </p>
+    <div class="hash fp">8101 FB3B B28D 02FB 239E&nbsp; 0CDF 9CC1 C7E7 A9B5 833A</div>
+    <p class="lede" style="margin-top:10px">
+      <a href="assets/veilvoice-signing-key.asc" download>download the public key</a>. The
+      user ID is exactly <code>tilas01</code>, with no e-mail address attached.
+    </p>
+
+    <h3>Or let it do all of that for you</h3>
+    <p class="lede">
+      <code>veilvoice verify</code> is built into the program itself: it ships in
+      every release because <code>veilvoice</code> does, and it needs no installer
+      and no separate download. Open a terminal in the folder you downloaded to
+      and run it, or open the desktop application's <strong>verify</strong> tab
+      and drop the archive on the window. One press does all four steps:
+    </p>
+    <ol class="lede">
+      <li>the signature over <code>SHA256SUMS</code>;</li>
+      <li>the archive, against <code>SHA256SUMS</code>;</li>
+      <li><code>CONTENTS.sha256</code>, against <code>SHA256SUMS</code>;</li>
+      <li><strong>every file you extracted</strong>, against
+        <code>CONTENTS.sha256</code>, and it names anything in that folder the
+        release never published.</li>
+    </ol>
+    <p class="lede">
+      Step 4 is the one worth having. A hash over the archive tells you the
+      <em>zip</em> is genuine; this tells you the <em>program you are about to
+      run</em> is. Releases before v0.1.15 carry no contents list and are
+      checked as far as step 2, which it says at the time.
+    </p>
+    <p class="lede">
+      If GnuPG is on your machine it is used as well: the key is added to your
+      keyring, <code>gpg --verify</code> is run, and what GnuPG said is shown.
+      The signature is then checked by two independent implementations. The
+      commands above are still printed for you to run yourself, because a
+      program telling you a download is genuine came out of that download,
+      only you typing them makes the answer independent of it.
+    </p>
+    <p class="lede">
+      <a href="releases.html#verify-a-download">Every one of those commands,
+      written out with what each answer proves</a>, sits with the release you
+      are downloading: the whole check in one line, the signature over the hash
+      list on its own, one file against that list, one file against a hash with
+      no list at all, the desktop application's three slots, and the build that
+      answers the harder question. Every command there is checked against the
+      program's own help when the page is generated.
+    </p>
+  </div>
+</section>
+
+<section id="crypto">
+  <div class="wrap">
+    <h2>SECURITY, IN FULL</h2>
+
+    <h3>Why the transform cannot be undone</h3>
+    <p>Three independent mechanisms, each individually lossy. Reversing the output means defeating all three.</p>
+    <table>
+      <thead><tr><th>Mechanism</th><th>What it destroys</th></tr></thead>
+      <tbody>
+        <tr><td>Phase discard</td><td>Every frame's measured phase is thrown away and a synthetic one generated. Phase encodes the exact waveform and the speaker's micro-timing. It is never stored, and infinitely many waveforms share any given magnitude spectrogram.</td></tr>
+        <tr><td>Many-to-one normalisation</td><td>Pitch register, vocal-tract length and long-term spectral tilt are each collapsed onto a single canonical value. A whole population of speakers maps to the same output, so there is nothing to invert.</td></tr>
+        <tr><td>CSPRNG modulation</td><td>The residual transform changes every frame from a ChaCha20 stream whose seed comes from the OS CSPRNG, lives only in page-locked RAM, and is zeroized on drop. There is no fixed transform to undo.</td></tr>
+        <tr><td>Rolling seed</td><td>Every two seconds by default the stream draws a fresh seed from its own output and restarts. ChaCha20 does not run backwards, so each roll permanently seals off the audio before it: a long recording is a chain of short streams, not one. Configurable, and inaudible: parameters glide across a roll and phase offsets ease over half a second.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>At-rest encryption</h3>
+    <table>
+      <thead><tr><th>Layer</th><th>Primitive</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Password → key</td><td>Argon2id (RFC 9106)</td><td>Memory-hard, so GPU and ASIC cracking gains little. Cost parameters travel with the file so old files still open.</td></tr>
+        <tr><td>Public-key</td><td>X25519 + ML-KEM-768 hybrid</td><td>An attacker must break <em>both</em>. Guards against harvest-now-decrypt-later: a recording stored today may be attacked decades from now.</td></tr>
+        <tr><td>Payload</td><td>XChaCha20-Poly1305</td><td>192-bit random nonces remove the counter-management failure mode entirely.</td></tr>
+        <tr><td>Header</td><td>Authenticated as associated data</td><td>An attacker cannot downgrade the stored KDF cost to make cracking cheap, because tampering makes decryption fail.</td></tr>
+        <tr><td>Keys in memory</td><td>Page-locked, zeroized, constant-time</td><td>Keys stay out of the swap file and are wiped on drop. Comparison leaks no timing.</td></tr>
+      </tbody>
+    </table>
+    <p class="lede">
+      Stated plainly: page-locking keeps keys off disk, <em>not</em> away from an
+      attacker who can already read this process's memory, and hibernation writes
+      RAM to disk wholesale and defeats it. A passphrase still sitting in a text
+      field has not reached that protection yet, which is why it is wiped the
+      moment it is used.
+    </p>
+    <p class="lede">
+      Recordings are sealed <em>in memory</em> and written once. An encrypted
+      recording never exists on disk in the clear, because a plaintext file that
+      is written and then deleted cannot be reliably taken back on flash storage.
+    </p>
+
+    <h3>The app lock, and exactly what it is worth</h3>
+    <p>
+      VeilVoice can sit behind a password of its own, separate from the one that
+      encrypts recordings, so that opening the app is not the same act as
+      unsealing everything it has written.
+    </p>
+    <table>
+      <thead><tr><th>What it is</th><th>What that means</th></tr></thead>
+      <tbody>
+        <tr><td>An Argon2id verifier, not a key</td><td>A password hash is stored and compared in constant time. It encrypts nothing, because there is nothing local it could usefully encrypt.</td></tr>
+        <tr><td>Rate limited, and the limit persists</td><td>Three attempts are free; then the wait doubles from 5 s to a 15-minute cap. The count is written to disk after every attempt, so killing the app does not hand an attacker a fresh budget.</td></tr>
+        <tr><td>Domain separated</td><td>Type the same passphrase in both places and you still do not end up with two copies of one value.</td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <p><strong>Not tamper-proof, and it cannot be.</strong> A local application
+      has nowhere to hide a secret from the machine it runs on. Anyone who can
+      write to your files can delete the lock; anyone holding the disk can edit
+      the attempt counter, move the clock, or attack the stored hash offline.
+      This protects against <em>casual access</em>, meaning the person who sits down at
+      your unlocked session. If the disk is the threat, the answers are full-volume
+      encryption and the at-rest encryption above, not this.</p>
+    </div>
+
+    <h3>Libre, and what that buys you</h3>
+    <ul>
+      <li><strong>GPL-3.0-or-later.</strong> You may use, study, modify and redistribute it; derivatives stay free under the same terms.</li>
+      <li><strong>No <code>unsafe</code> anywhere.</strong> Every crate carries <code>#![forbid(unsafe_code)]</code>, including the page-locking path. Whole classes of memory-corruption bugs are impossible by construction.</li>
+      <li><strong>Offline by construction.</strong> No telemetry and no accounts, and CI fails the build if an HTTP client so much as enters the dependency graph. One thing reaches the network and only when you press it: the desktop app's <em>check for updates</em> button, which runs then and at no other time, sends nothing about you, and downloads nothing. It borrows your system's own transfer tool, exactly as the release verifier does.</li>
+      <li><strong>Reproducible.</strong> Pinned toolchain, committed lockfile, path-remapped builds. Rebuild a release and confirm it matches, byte for byte.</li>
+      <li><strong>Artwork generated from source.</strong> Every icon and the banner come out of a readable script, not a committed binary blob.</li>
+      <li><strong>This website too.</strong> No CDN, no web fonts, no analytics, no cookies. The only third-party request is the optional repository panel, and it is a button you press.</li>
+    </ul>
+
+    <div class="note bad">
+      <p><strong>Audited by tilas01</strong>, the author, who wrote and
+      reviewed it. Be clear about what that is worth: a maintainer audit catches
+      what the author can see, and <strong>no external firm or independent
+      researcher has reviewed this code</strong>. The cryptography uses standard,
+      well-reviewed primitives rather than anything invented here, and the
+      de-identification argument is verifiable by reading two source files. Until
+      an independent review exists, the source is the strongest verification
+      available to you.</p>
+    </div>
+  </div>
+</section>
+
+<section id="repo">
+  <div class="wrap">
+    <h2>THE REPOSITORY, LIVE</h2>
+    <p class="lede">
+      This panel fetches from <code>api.github.com</code>, which learns your IP
+      address. GitHub already serves this page, so for most visitors that
+      changes nothing, but it is your call, so nothing loads until you ask.
+    </p>
+    <button class="btn" id="load-repo">load live repository data</button>
+    <p class="lede" id="repo-status" style="min-height:1.2em"></p>
+
+    <div class="stats">
+      <div class="stat"><b id="stars">&hellip;</b><span>stars</span></div>
+      <div class="stat"><b id="forks">&hellip;</b><span>forks</span></div>
+      <div class="stat"><b id="issues">&hellip;</b><span>open issues</span></div>
+      <div class="stat"><b id="repo-license">GPL-3.0</b><span>licence</span></div>
+    </div>
+    <p id="repo-desc" class="lede"></p>
+
+    <div class="readme" id="readme">
+      <p class="lede">The README renders here once loaded.</p>
+    </div>
+  </div>
+</section>
+
 </main>
+
+<footer>
+  <div class="wrap">
+    <p>
+      VeilVoice &middot; GPL-3.0-or-later ·
+      <a href="https://github.com/tilas01/veilvoice" rel="noopener noreferrer">source</a> ·
+      <a href="wiki.html">wiki</a> ·
+      <a href="user-agreements/LEGAL-WAIVER.txt">legal</a> ·
+      <a href="nojs/index.html">no-javascript version</a>
+    </p>
+    <p>
+      Signing key <span class="fp">8101FB3BB28D02FB239E0CDF9CC1C7E7A9B5833A</span>
+    </p>
+    <p>
+      Virtual audio routing on Windows is usually provided by VB-CABLE, which is
+      proprietary donationware and is not bundled: install it separately if you
+      want it.
+    </p>
+      <p class="credit">
+      Written and maintained by <a href="https://github.com/tilas01" rel="noopener noreferrer">tilas01</a>, who holds the copyright.
+      Every change is reviewed, built and tested before release.
+    </p>
+</div>
+</footer>
+
+<!-- The demonstration's data and the two modules that read it. Down here
+     rather than in <head> so `tools/site/split.py` can see which pages
+     actually carry the markup: `demo-data.js` is the largest script on the
+     site and eight section pages used to download it to do nothing with. -->
+<script src="js/demo-data.js" defer></script>
+<script src="js/sessions.js" defer></script>
+<script src="js/walkthrough.js" defer></script>
+<script src="js/markdown.js"></script>
+<script src="js/verify.js"></script>
+<script src="js/repo.js"></script>
+
+<!-- Full-size viewers. See the note in main.css: at a tenth of their
+     real size these captures are decoration, and the point of them is
+     evidence. `:target` rather than script, so they work with
+     JavaScript off. -->
+<div class="viewer" id="see-file" role="dialog" aria-label="Anonymise a file, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-file.png" alt="Anonymise a file" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-group" role="dialog" aria-label="Group mode, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-group.png" alt="Group mode" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-studio" role="dialog" aria-label="Recording Studio, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-studio.png" alt="Recording Studio" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-browser" role="dialog" aria-label="Recording Browser, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-browser.png" alt="Recording Browser" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-monitor" role="dialog" aria-label="Monitor, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-monitor.png" alt="Monitor" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-lock" role="dialog" aria-label="Lock, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-lock.png" alt="Lock" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-verify" role="dialog" aria-label="Verify a download, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-verify.png" alt="Verify a download" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-settings" role="dialog" aria-label="Settings, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-settings.png" alt="Settings" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-install" role="dialog" aria-label="Install, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-install.png" alt="Install" width="1400" height="1616">
+</div>
+<div class="viewer" id="see-about" role="dialog" aria-label="About, full size">
+  <a class="dismiss" href="#look" aria-label="Close"></a>
+  <a class="shut" href="#look">close</a>
+  <img src="assets/screenshots/gui-about.png" alt="About" width="1400" height="1616">
+</div>
 </body>
 </html>

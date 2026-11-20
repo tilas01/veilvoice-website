@@ -1,6 +1,0 @@
-[submodule "veilvoice"]
-	path = veilvoice
-	url = https://github.com/tilas01/veilvoice
-	shallow = true
-	update = none
-	branch = main
